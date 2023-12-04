@@ -1,53 +1,54 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 import FormularioFuncionario from './form/FuncionarioForm';
+import EmpresaForm from './form/EmpresasForm';
+import ContratosForm from './form/ContratosForm';
+import CargoForm from './form/CargoForm';
+import NotifcacaoForm from './Notifications';
+// import Icon from 'path/to/your/IconComponent'; // Certifique-se de importar o ícone apropriado
 
-function HomeView({ navigation }) {
-  const [modalVisible, setModalVisible] = React.useState(false);
+const Stack = createStackNavigator();
 
-  const openModal = () => {
-    setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
+function ParametrizacaoScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <TouchableOpacity style={styles.card} onPress={openModal}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('FuncionarioForm')}>
           <Text style={styles.cardText}>Funcionários</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.card} onPress={openModal}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('ContratosForm')}>
           <Text style={styles.cardText}>Contratos</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.card} onPress={openModal}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('EmpresaForm')}>
           <Text style={styles.cardText}>Empresas</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.row}>
-        <TouchableOpacity style={styles.card} onPress={openModal}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('CargoForm')}>
           <Text style={styles.cardText}>Cargos</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.card} onPress={openModal}>
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('NotifcacaoForm')}>
           <Text style={styles.cardText}>Notificações</Text>
         </TouchableOpacity>
       </View>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={closeModal}
-      >
-        <View style={styles.modalContainer}>
-          <FormularioFuncionario onSave={() => {}} onCancel={closeModal} />
-        </View>
-      </Modal>
     </View>
   );
 }
+  
+const HomeView = ({ navigation }) => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Cadastre seus parametros" component={ParametrizacaoScreen} /> 
+      <Stack.Screen name="FuncionarioForm" component={FormularioFuncionario} />
+      <Stack.Screen name="EmpresaForm" component={EmpresaForm} />
+      <Stack.Screen name="ContratosForm" component={ContratosForm} />
+      <Stack.Screen name="CargoForm" component={CargoForm} />
+      <Stack.Screen name="NotifcacaoForm" component={NotifcacaoForm} />
+      {/* Adicione outras telas aqui, se necessário */}
+    </Stack.Navigator>
+  );
+};
 
 HomeView.navigationOptions = {
   title: 'Home',
@@ -81,18 +82,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
 });
 
 export default HomeView;
-
-

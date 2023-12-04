@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { stylesFuncionarioForm } from "../../styles/forms/style-funcionarioss-form";
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
 
 const FormularioFuncionario = ({ onSave, onCancel }) => {
   const [novoFuncionario, setNovoFuncionario] = useState({

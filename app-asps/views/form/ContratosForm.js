@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { styleContratosForm } from "../../styles/forms/style-contratos-form";
 
-const FormularioFuncionario = ({ onSave, onCancel }) => {
+const ContratoForm = ({ onSave, onCancel }) => {
   const [novoContrato, setNovoContrato] = useState({
     codigo: "",
     valor: "",
@@ -42,8 +42,6 @@ const FormularioFuncionario = ({ onSave, onCancel }) => {
       </View>
     );
   };
-
-
 
 
   const [dadosContrato, setDadosContratoVisible] = useState(true);
@@ -166,4 +164,4 @@ const FormularioFuncionario = ({ onSave, onCancel }) => {
   );
 };
 
-export default FormularioFuncionario;
+export default ContratoForm;

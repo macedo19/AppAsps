@@ -1,4 +1,5 @@
 import React from "react";
+import { View, Text, StatusBar } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // ou a biblioteca que preferir
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -8,13 +9,19 @@ import ContratosView from "./views/ContratosView";
 import ParametrizacaoView from "./views/ParametrizacaoVIew";
 import EmpresasView from "./views/EmpresasView";
 import CargosView from "./views/CargosView";
+import HeaderMarca from "./views/HeaderMarca";
 
 const Tab = createBottomTabNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <StatusBar hidden />
+      <Tab.Navigator
+        screenOptions={{
+          header: ({ route }) => <HeaderMarca title={'UrbanBuild'} />, // Use HeaderMarca
+        }}
+      >
         <Tab.Screen
           name="Funcionários"
           component={FuncionariosView}
@@ -53,7 +60,7 @@ function App() {
           }}
         />
         <Tab.Screen
-          name="Cadastro"
+          name="Parâmetros"
           component={ParametrizacaoView}
           options={{
             tabBarIcon: ({ color, size }) => (

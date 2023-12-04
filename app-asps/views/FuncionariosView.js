@@ -1,89 +1,62 @@
-import React, { useState } from 'react';
-import { View, Button, FlatList, Text, StyleSheet } from 'react-native';
-import { Table, Row } from 'react-native-table-component';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import ModalBox from 'react-native-modalbox';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { globalStyles } from '../styles/views/style-funcionarios';
-import FormularioFuncionario from './form/FuncionarioForm';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
 const FuncionariosView = () => {
-  const [funcionarios, setFuncionarios] = useState([
-    { id: '1', nome: 'Funcionário 1' },
-    { id: '2', nome: 'Funcionário 2' },
-    // Adicione mais funcionários conforme necessário
-  ]);
+  const [funcionarios, setFuncionarios] = useState([]);
 
-  const [isModalVisible, setModalVisible] = useState(false);
+  useEffect(() => {
+    // Função para carregar dados da API
+    const fetchFuncionarios = async () => {
+      try {
+        const response = await fetch('https://urban-build.vercel.app/funcionarios/lista');
+        const data = await response.json();
+        const arrayData = Object.values(data.resultados);
+        setFuncionarios(arrayData); 
+      } catch (error) {
+        console.error('Erro ao carregar funcionários:', error);
+      }
+    };
 
-  const adicionarFuncionario = () => {
-    setModalVisible(true);
-  };
+    fetchFuncionarios();
+  }, []); 
 
-  const salvarNovoFuncionario = (novoFuncionario) => {
-    setFuncionarios([...funcionarios, { id: String(funcionarios.length + 1), ...novoFuncionario }]);
-    setModalVisible(false);
-  };
-
-  const onCancel = () => {
-    setModalVisible(false);
-  };
-
-  const renderItem = (funcionario) => (
-    <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }} key={funcionario.id}>
-      <Row
-        data={[funcionario.nome]}
-        style={globalStyles.itemContainer}
-        textStyle={{ ...globalStyles.itemText, fontWeight: 'bold' }}
-
-      />
-      <Row
-        data={[
-          <Icon name="edit" size={20} color="blue" />,
-          <Icon name="trash" size={20} color="red" />,
-        ]}
-        style={globalStyles.opcoesContainer}
-        textStyle={{ ...globalStyles.itemText, fontWeight: 'bold' }}
-
-      />
-    </Table>
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.cardContainer}>
+      <Text style={styles.cardTitle}>{item.nome}</Text>
+      <View style={styles.cardContent}>
+        <Text style={styles.cardCargo}>{item.cargo}</Text>
+      </View>
+      <View style={styles.cardOptions}>
+        <TouchableOpacity>
+          <Icon name="edit" size={20} color="blue" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="trash" size={20} color="red" />
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
   );
 
   return (
     <View style={globalStyles.container}>
-      <View style={globalStyles.botaoContainer}>
-        <Button title="Adicionar Funcionário" onPress={adicionarFuncionario} />
-      </View>
       <FlatList
         data={funcionarios}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => renderItem(item)}
+        keyExtractor={(item) => item.id} // Certifique-se de que a chave seja uma string ou número
+        renderItem={renderItem}
+        numColumns={2}
+        columnWrapperStyle={styles.columnWrapper}
       />
-
-      {/* ModalBox ou Tela de Formulário */}
-      <ModalBox
-        isOpen={isModalVisible}
-        onClosed={onCancel}
-        style={styles.modalBox}
-      >
-        <FormularioFuncionario onSave={salvarNovoFuncionario} onCancel={onCancel} />
-      </ModalBox>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  modalBox: {
-    backgroundColor: 'white',
-    padding: 20,
-  },
-});
-
-export default function App() {
+const App = () => {
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -91,4 +64,40 @@ export default function App() {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+const styles = StyleSheet.create({
+    cardContainer: {
+      flex: 1,
+      backgroundColor: '#fff',
+      borderRadius: 8,
+      padding: 16,
+      margin: 8,
+    },
+    cardTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    cardContent: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 10,
+    },
+    cardCargo: {
+      marginTop: 10,
+    },
+    cardOptions: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 10,
+    },
+    columnWrapper: {
+      justifyContent: 'space-between',
+    },
+  });
+
+export default App;
