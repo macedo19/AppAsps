@@ -26,7 +26,22 @@ const EmpresasForm = ({ onSave, onCancel }) => {
   const toggleDadosEndereco = () => setDadosEnderecoVisible(!dadosEnderecoVisible);
 
   const salvarNovaEmpresa = () => {
-    onSave(novaEmpresa);
+     // Envia os dados para a API
+     fetch('https://urban-build.vercel.app/empresa/criaempresa', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(novaEmpresa),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Resposta da API:', data);
+      onSave(novaEmpresa);
+    })
+    .catch(error => {
+      console.error('Erro na requisição:', error);
+    });
   };
   
 
@@ -49,7 +64,7 @@ const EmpresasForm = ({ onSave, onCancel }) => {
       .catch((error) => console.error("Erro ao obter segmentos:", error));
   };
 
-  console.log(segmentos)
+
   return (
     <ScrollView contentContainerStyle={stylesFuncionarioForm.scrollContainer}>
       <View style={stylesFuncionarioForm.container}>

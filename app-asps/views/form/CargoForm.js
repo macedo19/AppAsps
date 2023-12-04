@@ -20,7 +20,7 @@ const CargoForm = ({ onSave, onCancel }) => {
 
   const toggleDadosCargos = () => setDadosCargoVisible(!dadosCargo);
 
-  const salvarNovoFuncionario = () => {
+  const salvarNovoCargo = () => {
     // Construa o objeto que representa os dados a serem enviados
     const dadosParaEnviar = {
       codigo: novoCargo.codigo,
@@ -30,7 +30,7 @@ const CargoForm = ({ onSave, onCancel }) => {
 
     // Realize a requisição HTTP
     fetch("http://127.0.0.1:3000/cargo/criarcargo", {
-      method: "POST", // Pode ser POST, PUT, etc., dependendo da sua API
+      method: "POST", 
       headers: {
         "Content-Type": "application/json",
       },
@@ -38,12 +38,10 @@ const CargoForm = ({ onSave, onCancel }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Manipule a resposta da API aqui, se necessário
         console.log("Resposta da API:", data);
-        onSave(novoCargo); // Chame onSave após o envio bem-sucedido, se necessário
+        onSave(novoCargo);
       })
       .catch((error) => {
-        // Manipule erros de requisição aqui
         console.error("Erro na requisição:", error.message);
       });
   };
@@ -93,7 +91,7 @@ const CargoForm = ({ onSave, onCancel }) => {
         <View style={styleContratosForm.buttonsContainer}>
           <Button
             title="Salvar"
-            onPress={salvarNovoFuncionario}
+            onPress={salvarNovoCargo}
             style={styleContratosForm.button}
           />
 

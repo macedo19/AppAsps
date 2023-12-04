@@ -109,7 +109,25 @@ const FormularioFuncionario = ({ onSave, onCancel }) => {
     setDadosFuncionarioVisible(!dadosFuncionarioVisible);
 
   const salvarNovoFuncionario = () => {
-    onSave(novoFuncionario);
+    // Envia os dados para a API
+    fetch('https://urban-build.vercel.app/funcionarios/list', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(novoFuncionario),
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Faça algo com a resposta da API, se necessário
+      console.log('Resposta da API:', data);
+      // Chama a função onSave se a requisição for bem-sucedida
+      onSave(novoFuncionario);
+    })
+    .catch(error => {
+      console.error('Erro na requisição:', error);
+      // Trate o erro de alguma forma, se necessário
+    });
   };
 
   return (
@@ -119,7 +137,7 @@ const FormularioFuncionario = ({ onSave, onCancel }) => {
           onPress={toggleDadosPessoais}
           style={[
             stylesFuncionarioForm.sectionHeader,
-            { marginBottom: 10, backgroundColor: "#f0f0f0",  marginTop: 10 }, // Adicione esta linha
+            { marginBottom: 10, backgroundColor: "#f0f0f0", marginTop: 10 },
           ]}
         >
           <Text style={stylesFuncionarioForm.title}>Dados Pessoais</Text>
@@ -181,7 +199,7 @@ const FormularioFuncionario = ({ onSave, onCancel }) => {
           onPress={toggleDadosEndereco}
           style={[
             stylesFuncionarioForm.sectionHeader,
-            { marginBottom: 10, backgroundColor: "#f0f0f0",  marginTop: 10 }, // Adicione esta linha
+            { marginBottom: 10, backgroundColor: "#f0f0f0", marginTop: 10 },
           ]}
         >
           <Text style={stylesFuncionarioForm.title}>Dados Endereço</Text>
@@ -236,7 +254,7 @@ const FormularioFuncionario = ({ onSave, onCancel }) => {
           onPress={toggleDadosFuncionario}
           style={[
             stylesFuncionarioForm.sectionHeader,
-            { marginBottom: 10, backgroundColor: "#f0f0f0", marginTop: 10 }, // Adicione esta linha
+            { marginBottom: 10, backgroundColor: "#f0f0f0", marginTop: 10 },
           ]}
         >
           <Text style={stylesFuncionarioForm.title}>Dados Funcionário</Text>

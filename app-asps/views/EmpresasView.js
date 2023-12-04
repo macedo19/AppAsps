@@ -27,11 +27,9 @@ const EmpresasView = () => {
 
   const editarEmpresa = (item) => {
     setSelectedEmpresa(item);
-    // Implemente a lógica de edição conforme necessário
   };
 
   const apagarEmpresa = (item) => {
-    // Implemente a lógica de exclusão conforme necessário
     console.log('Empresa apagada:', item);
   };
 

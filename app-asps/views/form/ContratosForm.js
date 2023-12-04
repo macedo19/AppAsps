@@ -50,8 +50,23 @@ const ContratoForm = ({ onSave, onCancel }) => {
      setDadosContratoVisible(!dadosContrato);
 
 
-  const salvarNovoFuncionario = () => {
-    onSave(novoContrato);
+  const salvarNovoContrato = () => {
+      // Envia os dados para a API
+      fetch('https://urban-build.vercel.app/contrato/criacontrato', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(novaEmpresa),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Resposta da API:', data);
+        onSave(novaEmpresa);
+      })
+      .catch(error => {
+        console.error('Erro na requisição:', error);
+      });
   };
 
   return (
@@ -146,7 +161,7 @@ const ContratoForm = ({ onSave, onCancel }) => {
         <View style={styleContratosForm.buttonsContainer}>
           <Button
             title="Salvar"
-            onPress={salvarNovoFuncionario}
+            onPress={salvarNovoContrato}
             style={styleContratosForm.button}
           />
 
