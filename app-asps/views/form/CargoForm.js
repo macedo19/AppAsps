@@ -28,8 +28,10 @@ const CargoForm = ({ onSave, onCancel }) => {
       valor: novoCargo.valor,
     };
 
+
+
     // Realize a requisição HTTP
-    fetch("http://127.0.0.1:3000/cargo/criarcargo", {
+    fetch("https://urban-build.vercel.app/cargo/criarcargo", {
       method: "POST", 
       headers: {
         "Content-Type": "application/json",
